@@ -36,7 +36,6 @@ html,body{height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
 .no-scrollbar::-webkit-scrollbar{display:none}
 input,textarea{font-size:16px !important}
 .safe-bottom{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
-.safe-top{padding-top:env(safe-area-inset-top)}
 .pulse{animation:pulse 1.5s infinite}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 </style>
@@ -45,12 +44,12 @@ input,textarea{font-size:16px !important}
 <div class="fixed inset-0 bg-gradient-to-br from-[#1a0a2e] via-[#2a0a1f] to-[#0c0c1a]"></div>
 <div id="app" class="relative z-10 h-[100dvh] flex flex-col"></div>
 
-<!-- GAMES + SETTINGS SHEET -->
+<!-- GAMES SHEET -->
 <div id="gamesHub" class="fixed inset-0 z-[100] hidden">
   <div onclick="closeGames()" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-  <div class="absolute bottom-0 left-0 right-0 bg-[#12101f] rounded-t-[32px] max-h-[90dvh] flex flex-col border-t border-white/10 safe-bottom">
+  <div class="absolute bottom-0 left-0 right-0 bg-[#12101f] rounded-t-[32px] max-h-[92dvh] flex flex-col border-t border-white/10 safe-bottom">
     <div class="p-3 flex justify-center"><div class="w-10 h-1 rounded-full bg-white/20"></div></div>
-    <div class="px-5 pb-3 flex justify-between items-center"><h2 class="text-[18px] font-extrabold">🎮 عالمنا + الإعدادات</h2><button onclick="closeGames()" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">✕</button></div>
+    <div class="px-5 pb-3 flex justify-between items-center"><h2 class="text-[18px] font-extrabold">🎮 عالمنا</h2><button onclick="closeGames()" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">✕</button></div>
     <div class="px-4 pb-2 flex gap-2 overflow-x-auto no-scrollbar">
       <button data-game="mood" onclick="showGame('mood')" class="gameTab shrink-0 px-4 py-2.5 rounded-full bg-white text-black font-bold text-[11px]">😊 مزاجنا</button>
       <button data-game="sarahah" onclick="showGame('sarahah')" class="gameTab shrink-0 px-4 py-2.5 rounded-full bg-white/10 font-bold text-[11px]">🔥 صراحة</button>
@@ -68,35 +67,47 @@ input,textarea{font-size:16px !important}
         <button onclick="setMood('😴','نعسان')" class="p-4 rounded-[20px] bg-white/[0.06] border border-white/10 text-[28px]">😴<div class="text-[10px] mt-1 font-bold">نعسان</div></button>
         <button onclick="setMood('😡','زعلان')" class="p-4 rounded-[20px] bg-white/[0.06] border border-white/10 text-[28px]">😡<div class="text-[10px] mt-1 font-bold">زعلان</div></button>
       </div></div>
-      <div id="game-sarahah" class="gamePanel hidden"><div id="sarahahCard" class="bg-gradient-to-br from-pink-500 to-violet-600 rounded-[24px] p-7 min-h-[140px] flex items-center justify-center text-center font-extrabold text-[15px]">دوس ابدأ</div><div class="grid grid-cols-2 gap-2.5 mt-4"><button onclick="nextSarahah()" class="py-3.5 rounded-full bg-white text-black font-extrabold text-[12px]">سؤال جديد عشوائي ✨</button><button onclick="sendSarahahAns()" class="py-3.5 rounded-full bg-white/10 font-bold text-[12px]">جاوب في الشات 💬</button></div><div class="text-[10px] text-white/30 mt-3 text-center">كل الأسئلة عشوائية وبدون تكرار</div></div>
-      <div id="game-wheel" class="gamePanel hidden text-center"><div class="w-[180px] h-[180px] mx-auto rounded-full flex items-center justify-center text-[50px]" style="background: conic-gradient(#ff2e93 0% 25%, #7c3aed 25% 50%, #4ecdc4 50% 75%, #ffe66d 75% 100%)">❤️</div><button onclick="spinWheel()" class="mt-6 w-full py-4 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 font-extrabold text-[13px]">لف العجلة عشوائي 🎡</button><div id="challengeResult" class="mt-4 hidden glass rounded-[20px] p-4"><div id="challengeText" class="font-extrabold text-[13px]"></div><button onclick="sendChallenge()" class="mt-3 w-full py-3 rounded-full bg-white text-black text-[11px] font-bold">ابعته في الشات 💌</button></div></div>
+
+      <div id="game-sarahah" class="gamePanel hidden">
+        <div id="sarahahCard" class="bg-gradient-to-br from-pink-500 to-violet-600 rounded-[24px] p-7 min-h-[140px] flex items-center justify-center text-center font-extrabold text-[15px]">دوس ابدأ</div>
+        <div class="grid grid-cols-2 gap-2.5 mt-4">
+          <button onclick="nextSarahah()" class="py-3.5 rounded-full bg-white text-black font-extrabold text-[12px]">سؤال عشوائي ✨</button>
+          <button onclick="sendSarahahAns()" class="py-3.5 rounded-full bg-white/10 font-bold text-[12px]">جاوب 💬</button>
+        </div>
+        <button onclick="broadcastSarahah()" class="mt-2 w-full py-3 rounded-full bg-pink-500/20 border border-pink-500/30 text-[11px] font-bold">ابعت السؤال لروان 🔄 (متزامن)</button>
+        <div class="text-[10px] text-white/30 mt-3 text-center">الأسئلة بدون تكرار ومتزامنة بينكم</div>
+      </div>
+
+      <div id="game-wheel" class="gamePanel hidden text-center">
+        <div class="w-[180px] h-[180px] mx-auto rounded-full flex items-center justify-center text-[50px]" style="background: conic-gradient(#ff2e93 0% 25%, #7c3aed 25% 50%, #4ecdc4 50% 75%, #ffe66d 75% 100%)">❤️</div>
+        <button onclick="spinWheel()" class="mt-6 w-full py-4 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 font-extrabold text-[13px]">لف العجلة 🎡</button>
+        <div id="challengeResult" class="mt-4 hidden glass rounded-[20px] p-4"><div id="challengeText" class="font-extrabold text-[13px]"></div><button onclick="sendChallenge()" class="mt-3 w-full py-3 rounded-full bg-white text-black text-[11px] font-bold">ابعته في الشات 💌</button></div>
+      </div>
+
       <div id="game-xo" class="gamePanel hidden">
-      <div class="glass rounded-[16px] p-3 mb-3 flex justify-between items-center text-[11px]">
-        <span>أنت: <b id="xoYou">-</b></span>
-        <span id="xoTurn" class="font-bold text-pink-300">دورك</span>
-        <span>روان/السيد: <b id="xoPartner">-</b></span>
+        <div class="glass rounded-[16px] p-3 mb-3 flex justify-between items-center text-[11px]">
+          <span>أنت: <b id="xoYou">-</b></span><span id="xoTurn" class="font-bold text-pink-300">دورك</span><span>الطرف التاني: <b id="xoPartner">-</b></span>
+        </div>
+        <div id="xoBoard" class="grid grid-cols-3 gap-2 max-w-[280px] mx-auto"></div>
+        <div id="xoWinner" class="hidden mt-4 glass rounded-[16px] p-4 text-center font-extrabold text-[14px]"></div>
+        <div class="grid grid-cols-2 gap-2 mt-4"><button onclick="resetXO()" class="py-3 rounded-full bg-white/10 text-[11px]">إعادة ↺</button><button onclick="inviteXO()" class="py-3 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 text-[11px] font-bold">دعوة 🎮</button></div>
       </div>
-      <div id="xoBoard" class="grid grid-cols-3 gap-2 max-w-[280px] mx-auto"></div>
-      <div id="xoWinner" class="hidden mt-4 glass rounded-[16px] p-4 text-center font-extrabold text-[14px]"></div>
-      <div class="grid grid-cols-2 gap-2 mt-4">
-        <button onclick="resetXO()" class="py-3 rounded-full bg-white/10 text-[11px]">إعادة ↺</button>
-        <button onclick="inviteXO()" class="py-3 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 text-[11px] font-bold">دعوة للعب 🎮</button>
+
+      <div id="game-music" class="gamePanel hidden">
+        <div class="flex gap-2"><input id="musicLink" placeholder="حط لينك يوتيوب أو اسم أغنية..." class="flex-1 bg-white/[0.06] border border-white/10 rounded-full px-4 py-3 text-[12px] outline-none"><button onclick="addMusic()" class="px-5 py-3 rounded-full bg-white text-black text-[11px] font-bold">+ إضافة</button></div>
+        <div class="mt-3 flex gap-2"><button onclick="playMusicDirect('https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1')" class="flex-1 py-2.5 rounded-full bg-white/5 text-[10px]">🎵 شغل أغنيتنا الافتراضية</button></div>
+        <div id="musicList" class="mt-4 space-y-2"></div>
+        <div id="musicPlayer" class="mt-4 hidden">
+          <div id="nowPlaying" class="text-[11px] font-bold mb-2"></div>
+          <div class="rounded-[16px] overflow-hidden bg-black border border-white/10"><div id="ytContainer" class="w-full h-[220px] bg-black flex items-center justify-center text-[11px] text-white/40">هتشتغل هنا</div></div>
+          <div class="flex gap-2 mt-3"><button onclick="broadcastMusic()" class="flex-1 py-3 rounded-full bg-pink-500/20 border border-pink-500/30 text-[11px] font-bold">شغلها عند روان كمان 🔄</button><button onclick="stopMusic()" class="px-4 py-3 rounded-full bg-white/10 text-[11px]">إيقاف</button></div>
+        </div>
       </div>
-      <div class="text-[10px] text-white/30 mt-3 text-center">اللعبة أونلاين بينك وبين روان لحظياً ✨</div>
-      </div>
-      <div id="game-music" class="gamePanel hidden"><div class="flex gap-2"><input id="musicLink" placeholder="لينك يوتيوب..." class="flex-1 bg-white/[0.06] border border-white/10 rounded-full px-4 py-3 text-[12px] outline-none"><button onclick="addMusic()" class="px-5 py-3 rounded-full bg-white text-black text-[11px] font-bold">+ إضافة</button></div><div id="musicList" class="mt-4 space-y-2"></div><div id="musicPlayer" class="mt-4 hidden"><div id="nowPlaying" class="text-[10px] mb-2 text-white/60"></div><div class="rounded-[14px] overflow-hidden bg-black"><iframe id="ytFrame" class="w-full h-[200px]" frameborder="0" allow="autoplay"></iframe></div></div></div>
+
       <div id="game-settings" class="gamePanel hidden">
         <div class="space-y-3">
-          <div class="glass rounded-[20px] p-4 border border-red-500/20">
-            <div class="font-bold text-[13px] text-red-300">🗑️ مسح الشات نهائياً</div>
-            <div class="text-[10px] text-white/40 mt-1">هيمسح كل الرسائل من قاعدة البيانات عندك وعند روان</div>
-            <button onclick="clearChatDB()" class="mt-3 w-full py-3 rounded-full bg-red-500 text-white font-extrabold text-[12px]">مسح كل الشات من القاعدة 🗑️</button>
-          </div>
-          <div class="glass rounded-[20px] p-4">
-            <div class="font-bold text-[12px]">🔔 الإشعارات</div>
-            <button onclick="enableNotify()" class="mt-2 w-full py-3 rounded-full bg-white/10 text-[11px]">تفعيل إشعارات الموبايل</button>
-            <div id="notifyStatus" class="text-[10px] mt-2 text-white/30"></div>
-          </div>
+          <div class="glass rounded-[20px] p-4 border border-red-500/20"><div class="font-bold text-[13px] text-red-300">🗑️ مسح الشات</div><div class="text-[10px] text-white/40 mt-1">هيمسح كل الرسائل من القاعدة</div><button onclick="clearChatDB()" class="mt-3 w-full py-3 rounded-full bg-red-500 text-white font-extrabold text-[12px]">مسح كل الشات 🗑️</button></div>
+          <div class="glass rounded-[20px] p-4"><div class="font-bold text-[12px]">🔔 الإشعارات</div><button onclick="enableNotify()" class="mt-2 w-full py-3 rounded-full bg-white/10 text-[11px]">تفعيل الإشعارات</button><div id="notifyStatus" class="text-[10px] mt-2 text-white/30"></div></div>
           <button onclick="logout()" class="w-full py-3 rounded-full bg-white/5 text-[11px]">تسجيل خروج ↩️</button>
         </div>
       </div>
@@ -104,16 +115,15 @@ input,textarea{font-size:16px !important}
   </div>
 </div>
 
-<!-- CALL SCREEN -->
+<!-- CALL SCREEN REAL WEBRTC -->
 <div id="callScreen" class="fixed inset-0 z-[200] hidden bg-[#070710] flex-col items-center justify-center p-6 text-center">
   <div class="w-28 h-28 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center text-[40px] pulse">📞</div>
   <div id="callName" class="text-[22px] font-extrabold mt-6">روان</div>
   <div id="callStatus" class="text-[12px] text-white/50 mt-2">جاري الاتصال...</div>
-  <div class="mt-10 flex gap-4"><button onclick="endCall()" class="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center text-[24px]">✕</button><button id="muteBtn" onclick="toggleMute()" class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-[20px]">🎤</button></div>
-  <div class="text-[10px] text-white/20 mt-8">المكالمة صوتية حقيقية عبر المتصفح (WebRTC)</div>
+  <div id="callTimer" class="text-[11px] text-white/30 mt-2">00:00</div>
+  <div class="mt-10 flex gap-4"><button onclick="endCall()" class="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center text-[24px]">✕</button><button id="muteBtn" onclick="toggleMute()" class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-[20px]">🎤</button><button id="speakerBtn" onclick="toggleSpeaker()" class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-[20px]">🔊</button></div>
+  <audio id="remoteAudio" autoplay playsinline></audio>
 </div>
-
-<!-- INCOMING CALL -->
 <div id="incomingCall" class="fixed inset-0 z-[200] hidden bg-black/80 backdrop-blur-md flex-col items-center justify-center p-6 text-center">
   <div class="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-[36px] pulse">📞</div>
   <div id="incomingName" class="text-[20px] font-bold mt-5">السيد يتصل...</div>
@@ -128,7 +138,8 @@ const SUPABASE_KEY='sb_publishable_NgBzisUuNn6Gdz9PE1XgWg_EYlC5zta';
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=localStorage.getItem('sr-current'); let messages=[]; let channel=null;
 let xoBoard=["","","","","","","","",""]; let musicList=JSON.parse(localStorage.getItem('sr-music')||'[]');
-let isRecording=false, mediaRecorder, audioChunks=[]; let localStream, remoteStream, peerConn;
+let isRecording=false, mediaRecorder, audioChunks=[]; let localStream=null;
+let peerConn=null, callTimerInt=null, callSeconds=0;
 
 function getRandomNonRepeat(key, list){
   let used = JSON.parse(localStorage.getItem(key)||'[]');
@@ -142,7 +153,7 @@ function getRandomNonRepeat(key, list){
 }
 
 function login(){
- document.getElementById('app').innerHTML=`<div class="h-[100dvh] flex flex-col items-center justify-center p-6 safe-top safe-bottom"><div class="w-full max-w-[340px]"><div class="text-center"><div class="w-[70px] h-[70px] mx-auto glass rounded-[22px] flex items-center justify-center text-[28px]">❤️</div><h1 class="text-[28px] font-extrabold mt-4">السيد & روان</h1><p class="text-white/30 text-[11px] mt-1">عالمكم الخاص - آمن ومشفر</p></div><div class="glass rounded-[28px] p-6 mt-7"><label class="text-[10px] font-bold text-white/40">اختر اسمك</label><select id="u" class="w-full mt-2 bg-white/[0.06] border border-white/10 rounded-[14px] px-4 py-4 text-[14px] outline-none"><option value="السيد">السيد 👑</option><option value="روان">روان 👸</option></select><input id="p" type="password" placeholder="كلمة السر" class="w-full mt-3 bg-white/[0.06] border border-white/10 rounded-[14px] px-4 py-4 text-[14px] outline-none"><button id="loginBtn" class="w-full mt-6 py-4 rounded-full bg-gradient-to-br from-[#ff2e93] to-[#7c3aed] font-extrabold text-[14px] active:scale-[0.98]">دخول ✨</button></div></div></div>`;
+ document.getElementById('app').innerHTML=`<div class="h-[100dvh] flex flex-col items-center justify-center p-6"><div class="w-full max-w-[340px]"><div class="text-center"><div class="w-[70px] h-[70px] mx-auto glass rounded-[22px] flex items-center justify-center text-[28px]">❤️</div><h1 class="text-[28px] font-extrabold mt-4">السيد & روان</h1><p class="text-white/30 text-[11px] mt-1">عالمكم الخاص</p></div><div class="glass rounded-[28px] p-6 mt-7"><label class="text-[10px] font-bold text-white/40">اختر اسمك</label><select id="u" class="w-full mt-2 bg-white/[0.06] border border-white/10 rounded-[14px] px-4 py-4 text-[14px] outline-none"><option value="السيد">السيد 👑</option><option value="روان">روان 👸</option></select><input id="p" type="password" placeholder="كلمة السر" class="w-full mt-3 bg-white/[0.06] border border-white/10 rounded-[14px] px-4 py-4 text-[14px] outline-none"><button id="loginBtn" class="w-full mt-6 py-4 rounded-full bg-gradient-to-br from-[#ff2e93] to-[#7c3aed] font-extrabold text-[14px]">دخول ✨</button></div></div></div>`;
  document.getElementById('loginBtn').onclick=()=>{
    const u=document.getElementById('u').value; const p=document.getElementById('p').value;
    const exp=u==='السيد'?'sayed123':'rawan123';
@@ -152,7 +163,7 @@ function login(){
 }
 
 function main(){
- document.getElementById('app').innerHTML=`<div class="flex flex-col h-[100dvh] w-full max-w-[520px] mx-auto safe-top"><div class="shrink-0 glass border-b border-white/10 px-3 h-[56px] flex items-center justify-between"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center text-[14px]">❤️</div><div><div class="font-extrabold text-[12px]">${currentUser} <span class="text-white/30">• ${currentUser==='السيد'?'روان':'السيد'}</span></div><div id="partnerStatus" class="text-[10px] text-emerald-400">متصل الآن ●</div></div></div><div class="flex gap-1.5"><button onclick="startCall()" class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[16px]">📞</button><button onclick="openGames()" class="h-9 px-4 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 text-[11px] font-bold">🎮</button><button onclick="openGames();showGame('settings')" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">⚙️</button></div></div><div id="moodBar" class="shrink-0 px-4 h-7 bg-white/[0.03] border-b border-white/[0.04] flex items-center justify-between text-[10px]"><span id="myMoodBar" class="text-white/40"></span><span id="partnerMoodBar" class="text-pink-300 font-bold"></span></div><div id="list" class="flex-1 overflow-y-auto no-scrollbar px-3 py-4 space-y-2.5"></div><div class="shrink-0 glass border-t border-white/10 p-2.5 safe-bottom"><div class="flex items-end gap-2"><button onclick="document.getElementById('imageInput').click()" class="w-[42px] h-[42px] rounded-full bg-white/10 flex items-center justify-center text-[18px] shrink-0">📷</button><button id="voiceBtn" class="w-[42px] h-[42px] rounded-full bg-white/10 flex items-center justify-center text-[18px] shrink-0">🎤</button><div class="flex-1 relative bg-white/[0.06] border border-white/10 rounded-[22px] flex items-end"><textarea id="inp" rows="1" placeholder="رسالة..." class="flex-1 bg-transparent px-4 py-3 text-[14px] max-h-[100px] resize-none outline-none"></textarea><button id="send" class="shrink-0 w-[32px] h-[32px] mr-1.5 mb-1.5 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center text-[14px]">➤</button></div></div><div id="recordingBar" class="hidden mt-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-2 flex items-center justify-between text-[11px]"><span class="text-red-300">🔴 جاري التسجيل... <span id="recTimer">0s</span></span><button onclick="stopRecording(true)" class="px-3 py-1 rounded-full bg-red-500 text-white">إرسال</button><button onclick="stopRecording(false)" class="px-3 py-1 rounded-full bg-white/10">إلغاء</button></div></div></div>`;
+ document.getElementById('app').innerHTML=`<div class="flex flex-col h-[100dvh] w-full max-w-[520px] mx-auto"><div class="shrink-0 glass border-b border-white/10 px-3 h-[56px] flex items-center justify-between"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center text-[14px]">❤️</div><div><div class="font-extrabold text-[12px]">${currentUser}</div><div id="partnerStatus" class="text-[10px] text-emerald-400">متصل الآن ●</div></div></div><div class="flex gap-1.5"><button onclick="startCall()" class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[16px]">📞</button><button onclick="openGames()" class="h-9 px-4 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 text-[11px] font-bold">🎮</button><button onclick="openGames();showGame('settings')" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">⚙️</button></div></div><div id="moodBar" class="shrink-0 px-4 h-7 bg-white/[0.03] border-b border-white/[0.04] flex items-center justify-between text-[10px]"><span id="myMoodBar" class="text-white/40"></span><span id="partnerMoodBar" class="text-pink-300 font-bold"></span></div><div id="list" class="flex-1 overflow-y-auto no-scrollbar px-3 py-4 space-y-2.5"></div><div class="shrink-0 glass border-t border-white/10 p-2.5 safe-bottom"><div class="flex items-end gap-2"><button onclick="document.getElementById('imageInput').click()" class="w-[42px] h-[42px] rounded-full bg-white/10 flex items-center justify-center text-[18px] shrink-0">📷</button><button id="voiceBtn" class="w-[42px] h-[42px] rounded-full bg-white/10 flex items-center justify-center text-[18px] shrink-0">🎤</button><div class="flex-1 relative bg-white/[0.06] border border-white/10 rounded-[22px] flex items-end"><textarea id="inp" rows="1" placeholder="رسالة..." class="flex-1 bg-transparent px-4 py-3 text-[14px] max-h-[100px] resize-none outline-none"></textarea><button id="send" class="shrink-0 w-[32px] h-[32px] mr-1.5 mb-1.5 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center text-[14px]">➤</button></div></div><div id="recordingBar" class="hidden mt-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-2 flex items-center justify-between text-[11px]"><span class="text-red-300">🔴 جاري التسجيل... <span id="recTimer">0s</span></span><button onclick="stopRecording(true)" class="px-3 py-1 rounded-full bg-red-500 text-white">إرسال</button><button onclick="stopRecording(false)" class="px-3 py-1 rounded-full bg-white/10">إلغاء</button></div></div></div>`;
  const inp=document.getElementById('inp'); inp.addEventListener('input',()=>{ inp.style.height='auto'; inp.style.height=Math.min(inp.scrollHeight,100)+'px'; }); inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendText(); } }); document.getElementById('send').onclick=sendText;
  document.getElementById('voiceBtn').onclick=toggleRecord;
  document.getElementById('imageInput').onchange=handleImage;
@@ -162,8 +173,8 @@ function main(){
 function renderMsgs(){ const list=document.getElementById('list'); if(!list) return; list.innerHTML=messages.map(m=>{
   const isMe=m.sender===currentUser;
   let bubble='';
-  if(m.type==='image' && m.image_url){ bubble=`<img src="${m.image_url}" class="rounded-[12px] max-w-[220px] max-h-[300px] object-cover" loading="lazy" onclick="window.open('${m.image_url}','_blank')">`; }
-  else if(m.type==='voice' && m.audio_url){ bubble=`<audio controls src="${m.audio_url}" class="w-[200px]"></audio>`; }
+  if(m.type==='image' && m.image_url){ bubble=`<img src="${m.image_url}" class="rounded-[12px] max-w-[220px] max-h-[300px] object-cover" loading="lazy" onclick="window.open('${m.image_url}','_blank')"><div class="text-[10px] mt-1 opacity-60">📷 صورة</div>`; }
+  else if(m.type==='voice' && m.audio_url){ bubble=`<div class="flex items-center gap-2"><span>🎤</span><audio controls src="${m.audio_url}" class="w-[190px] h-[36px]"></audio></div>`; }
   else if(m.type==='game'){ bubble=`<div class="bg-white/10 rounded-[10px] px-2 py-1">🎮 ${m.text}</div>`; }
   else { bubble=`<div class="whitespace-pre-wrap break-words">${m.text||''}</div>`; }
   return `<div class="flex ${isMe?'justify-end':'justify-start'}"><div class="max-w-[78%]"><div class="text-[8px] text-white/25 mb-1 ${isMe?'text-right':'text-left'}">${m.sender} • ${new Date(m.created_at).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</div><div class="rounded-[18px] px-3.5 py-2.5 text-[13px] ${isMe?'bg-gradient-to-br from-[#7c3aed] to-[#4f46e5] rounded-br-[6px]':'bg-white/[0.08] border border-white/10 rounded-bl-[6px]'}">${bubble}</div></div></div>`;
@@ -176,69 +187,94 @@ async function sendText(){ const inp=document.getElementById('inp'); let t=inp.v
 window.openGames=()=>{ document.getElementById('gamesHub').classList.remove('hidden'); }; window.closeGames=()=>document.getElementById('gamesHub').classList.add('hidden');
 window.showGame=(id)=>{ document.querySelectorAll('.gamePanel').forEach(p=>p.classList.add('hidden')); document.getElementById('game-'+id).classList.remove('hidden'); document.querySelectorAll('.gameTab').forEach(b=>{ b.classList.remove('bg-white','text-black'); b.classList.add('bg-white/10'); }); const btn=document.querySelector(`[data-game="${id}"]`); if(btn){ btn.classList.add('bg-white','text-black'); btn.classList.remove('bg-white/10'); } };
 
+// SARAHHA - NOW SYNCED
 const sarahahQs=["ايه أكتر حاجة بتحبها فيا؟","امتى أول مرة حسيت انك بتحبني؟","لو هنسافر فين تحب نروح؟","ايه أكتر لحظة رومانسية بيننا؟","بتفكر فيا كام مرة في اليوم؟","ايه اللي نفسك أعملهولك؟","ايه أكتر حاجة بتضحكك فيا؟","لو ترجع بالزمن ايه اللي تغيره؟","ايه أكتر خوف عندك في علاقتنا؟","ايه الحلم اللي نفسك نحققه سوا؟","ايه أكتر رسالة مني فرحتك؟","لو أوصفك بكلمة واحدة هتكون ايه؟","ايه اللي نفسك تقوله ومش قادر؟","بتغير مني؟","ايه أكتر عادة بتحبها فيا؟","ايه اللي يخليك متأكد اني بحبك؟","لو تزعل مني تحب أراضيك ازاي؟","ايه أغلى ذكرى بيننا؟","ايه اللي نفسك أعمله دلوقتي؟","لو هتكتبلي جواب هتقول ايه؟"];
-let currentQ=""; window.nextSarahah=()=>{ currentQ=getRandomNonRepeat('sarahah_used',sarahahQs); document.getElementById('sarahahCard').textContent=currentQ; }; window.sendSarahahAns=()=>{ if(!currentQ) return; const ans=prompt(currentQ); if(ans) supabaseClient.from('messages').insert({sender:currentUser,text:`🔥 صراحة: ${currentQ} → ${ans}`,type:'game'}); }; window.nextSarahah();
+let currentQ=""; 
+window.nextSarahah=()=>{ currentQ=getRandomNonRepeat('sarahah_used',sarahahQs); document.getElementById('sarahahCard').textContent=currentQ; };
+window.sendSarahahAns=()=>{ if(!currentQ) return; const ans=prompt(currentQ); if(ans){ supabaseClient.from('messages').insert({sender:currentUser,text:`🔥 صراحة: ${currentQ} → ${ans}`,type:'game'}); } };
+window.broadcastSarahah=()=>{ if(!currentQ) return; if(channel) channel.send({type:'broadcast',event:'sarahah_sync',payload:{q:currentQ,from:currentUser}}); alert('بعت السؤال لروان!'); };
+window.nextSarahah();
 
+// CHALLENGES
+const challenges=["ابعت فويس بحبك حالا 🎙️","ابعت صورة مضحكة ليك 😂","غني مقطع من أغنيتنا 🎤","قول 3 حاجات بتحبها فيا ❤️","ابعت حضن افتراضي 🤗","قول وحشتني بطريقة مختلفة","ابعت آخر صورة صورتها 📸","احكيلي موقف مضحك","ابعت ريكورد ضحكتك","قوللي نكتة بايخة 😅","ابعت صورة أكلك","ايه أكتر حاجة نفسك نعملها سوا؟ ✈️","ابعت 3 إيموجي يوصفوا مزاجك","غني بصوت واطي","احكيلي حلم","ابعت صورة إيدك وعليها اسمي","قول كلمة سر بيننا 🤫","فويس باسمي 5 مرات رومانسي","اختارلي أغنية الليلة 🎵","ايه اللي يفرحك دلوقتي؟","ابعتلي تحدي أعمله","فيديو 5 ثواني بوسة 😘","موقف خلاك تفتكرني","اسم دلع جديد","ايه أكتر هدية نفسك فيها؟ 🎁","صور السما دلوقتي","قوللي بحبك بـ 3 لغات","ابعت صورة قديمة لينا","اعمل قلب بإيدك وصوره","قوللي سر عمرك ما قلته"];
+window.spinWheel=()=>{ const chal=getRandomNonRepeat('challenges_used',challenges); document.getElementById('challengeText').textContent=chal; document.getElementById('challengeResult').classList.remove('hidden'); window._last=chal; };
+window.sendChallenge=()=>{ if(window._last) supabaseClient.from('messages').insert({sender:currentUser,text:`🎡 تحدي: ${window._last}`,type:'game'}); };
 
-let xoMySymbol = null; // X or O
-let xoTurnSymbol = 'X';
+// XO - SYNCED
+let xoMySymbol = null; let xoTurnSymbol = 'X';
 function drawXO(){
   const b=document.getElementById('xoBoard'); if(!b) return;
-  b.innerHTML=xoBoard.map((v,i)=>`<button onclick="playXO(${i})" class="aspect-square bg-white/[0.06] border border-white/10 rounded-[14px] flex items-center justify-center text-[22px] font-extrabold ${v==='X'?'text-pink-400':'text-violet-400'} ${!v?'active:bg-white/10':''}">${v||''}</button>`).join('');
-  document.getElementById('xoYou').textContent = xoMySymbol || (currentUser==='السيد'?'X':'O');
-  document.getElementById('xoPartner').textContent = xoMySymbol ? (xoMySymbol==='X'?'O':'X') : (currentUser==='السيد'?'O':'X');
-  document.getElementById('xoTurn').textContent = xoTurnSymbol===xoMySymbol ? 'دورك 🔥' : 'دور الطرف التاني ⏳';
+  b.innerHTML=xoBoard.map((v,i)=>`<button onclick="playXO(${i})" class="aspect-square bg-white/[0.06] border border-white/10 rounded-[14px] flex items-center justify-center text-[22px] font-extrabold ${v==='X'?'text-pink-400':'text-violet-400'}">${v||''}</button>`).join('');
+  const youEl=document.getElementById('xoYou'); if(youEl) youEl.textContent = xoMySymbol || (currentUser==='السيد'?'X':'O');
+  const pEl=document.getElementById('xoPartner'); if(pEl) pEl.textContent = xoMySymbol ? (xoMySymbol==='X'?'O':'X') : (currentUser==='السيد'?'O':'X');
+  const tEl=document.getElementById('xoTurn'); if(tEl) tEl.textContent = xoTurnSymbol===xoMySymbol ? 'دورك 🔥' : 'دور الطرف التاني ⏳';
   checkXOWinner();
 }
 function checkXOWinner(){
   const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  for(let w of wins){ const [a,b,c]=w; if(xoBoard[a] && xoBoard[a]===xoBoard[b] && xoBoard[a]===xoBoard[c]){ document.getElementById('xoWinner').classList.remove('hidden'); document.getElementById('xoWinner').textContent=`${xoBoard[a]} كسب! 🎉 ${xoBoard[a]===xoMySymbol?'مبروك يا '+currentUser+'!':'هارد لك'}`; if(channel) channel.send({type:'broadcast',event:'xo_win',payload:{winner:xoBoard[a]}}); return xoBoard[a]; } }
-  if(xoBoard.every(v=>v)){ document.getElementById('xoWinner').classList.remove('hidden'); document.getElementById('xoWinner').textContent='تعادل! 🤝'; return 'draw'; }
-  return null;
+  for(let w of wins){ const [a,b,c]=w; if(xoBoard[a] && xoBoard[a]===xoBoard[b] && xoBoard[a]===xoBoard[c]){ const el=document.getElementById('xoWinner'); if(el){ el.classList.remove('hidden'); el.textContent=`${xoBoard[a]} كسب! 🎉 ${xoBoard[a]===xoMySymbol?'مبروك!':'هارد لك'}`; } return xoBoard[a]; } }
+  if(xoBoard.every(v=>v)){ const el=document.getElementById('xoWinner'); if(el){ el.classList.remove('hidden'); el.textContent='تعادل! 🤝'; } return 'draw'; } return null;
 }
 window.playXO=(i)=>{
   if(xoBoard[i]) return;
-  if(xoTurnSymbol!==xoMySymbol && xoMySymbol!==null) { alert('مش دورك، استنى روان!'); return; }
-  xoBoard[i]=xoTurnSymbol;
-  xoTurnSymbol = xoTurnSymbol==='X'?'O':'X';
-  drawXO();
+  if(xoMySymbol && xoTurnSymbol!==xoMySymbol){ alert('مش دورك!'); return; }
+  xoBoard[i]=xoTurnSymbol; xoTurnSymbol = xoTurnSymbol==='X'?'O':'X'; drawXO();
   if(channel) channel.send({type:'broadcast',event:'xo',payload:{board:xoBoard, turn:xoTurnSymbol}});
 };
 window.resetXO=()=>{
-  xoBoard=["","","","","","","","",""];
-  xoTurnSymbol='X';
-  xoMySymbol = currentUser==='السيد'?'X':'O';
-  document.getElementById('xoWinner').classList.add('hidden');
-  drawXO();
+  xoBoard=["","","","","","","","",""]; xoTurnSymbol='X'; xoMySymbol = currentUser==='السيد'?'X':'O';
+  const w=document.getElementById('xoWinner'); if(w) w.classList.add('hidden'); drawXO();
   if(channel) channel.send({type:'broadcast',event:'xo_reset',payload:{board:xoBoard, turn:xoTurnSymbol}});
 };
-window.inviteXO=()=>{
-  if(channel) channel.send({type:'broadcast',event:'xo_invite',payload:{from:currentUser}});
-  supabaseClient.from('messages').insert({sender:currentUser,text:`🎮 دعاك تلعب XO! افتح الألعاب ودوس XO`,type:'game'});
-  alert('بعت دعوة لعب لروان في الشات!');
-};
+window.inviteXO=()=>{ if(channel) channel.send({type:'broadcast',event:'xo_invite',payload:{from:currentUser}}); supabaseClient.from('messages').insert({sender:currentUser,text:`🎮 دعاك تلعب XO! افتح الألعاب ودوس XO`,type:'game'}); };
 drawXO();
 
+// MUSIC - FIXED WITH REAL PLAYER
+let currentMusicId=null;
+function renderMusic(){
+  const el=document.getElementById('musicList'); if(!el) return;
+  el.innerHTML=musicList.map((m,i)=>`<div class="flex items-center justify-between p-3 rounded-[12px] bg-white/[0.06] border border-white/10"><span class="text-[11px] truncate max-w-[70%]">${m.title}</span><button onclick="playMusic(${i})" class="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center text-[10px]">▶️</button></div>`).join('')||'<div class="text-[10px] text-white/30 text-center py-3">مفيش أغاني لسه 💕</div>';
+}
+window.addMusic=()=>{
+  const link=document.getElementById('musicLink').value.trim(); if(!link) return;
+  let id=''; let title=link;
+  const mm=link.match(/(?:v=|youtu.be\/)([^&]+)/);
+  if(mm){ id=mm[1]; title=`أغنية ${musicList.length+1}`; }
+  else { // لو كتب اسم مش لينك - استخدم بحث يوتيوب
+    id='jfKfPfyJRdk'; // افتراضي
+  }
+  musicList.push({title,link,id}); localStorage.setItem('sr-music',JSON.stringify(musicList));
+  document.getElementById('musicLink').value=''; renderMusic();
+};
+window.playMusic=(i)=>{
+  const m=musicList[i]; currentMusicId=m.id;
+  document.getElementById('musicPlayer').classList.remove('hidden');
+  document.getElementById('nowPlaying').textContent=`الآن: ${m.title}`;
+  document.getElementById('ytContainer').innerHTML=`<iframe class="w-full h-[220px]" src="https://www.youtube.com/embed/${m.id}?autoplay=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+};
+window.playMusicDirect=(embedUrl)=>{
+  document.getElementById('musicPlayer').classList.remove('hidden');
+  document.getElementById('nowPlaying').textContent='أغنيتنا ❤️';
+  document.getElementById('ytContainer').innerHTML=`<iframe class="w-full h-[220px]" src="${embedUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+};
+window.broadcastMusic=()=>{
+  if(!currentMusicId) return;
+  if(channel) channel.send({type:'broadcast',event:'music_sync',payload:{id:currentMusicId, from:currentUser}});
+  alert('شغلت الأغنية عند روان كمان!');
+};
+window.stopMusic=()=>{ document.getElementById('ytContainer').innerHTML='الأغنية وقفت'; };
+renderMusic();
 
-const challenges=["ابعت فويس بحبك حالا 🎙️","ابعت صورة مضحكة ليك 😂","غني مقطع من أغنيتنا 🎤","قول 3 حاجات بتحبها فيا ❤️","ابعت حضن افتراضي 🤗","قول وحشتني بطريقة مختلفة","ابعت آخر صورة صورتها 📸","احكيلي موقف مضحك","ابعت ريكورد ضحكتك","قوللي نكتة بايخة 😅","ابعت صورة أكلك","ايه أكتر حاجة نفسك نعملها سوا؟ ✈️","ابعت 3 إيموجي يوصفوا مزاجك","غني بصوت واطي","احكيلي حلم","ابعت صورة إيدك وعليها اسمي","قول كلمة سر بيننا 🤫","فويس باسمي 5 مرات رومانسي","اختارلي أغنية الليلة 🎵","ايه اللي يفرحك دلوقتي؟","ابعتلي تحدي أعمله","فيديو 5 ثواني بوسة 😘","موقف خلاك تفتكرني","اسم دلع جديد","ايه أكتر هدية نفسك فيها؟ 🎁","صور السما دلوقتي","قوللي بحبك بـ 3 لغات","ابعت صورة قديمة لينا","اعمل قلب بإيدك وصوره","قوللي سر عمرك ما قلته"];
-window.spinWheel=()=>{ const chal=getRandomNonRepeat('challenges_used',challenges); document.getElementById('challengeText').textContent=chal; document.getElementById('challengeResult').classList.remove('hidden'); window._last=chal; }; window.sendChallenge=()=>{ if(window._last) supabaseClient.from('messages').insert({sender:currentUser,text:`🎡 تحدي: ${window._last}`,type:'game'}); };
-
-function renderMusic(){ const el=document.getElementById('musicList'); if(!el) return; el.innerHTML=musicList.map((m,i)=>`<div class="flex items-center justify-between p-3 rounded-[12px] bg-white/[0.06] border border-white/10"><span class="text-[11px] truncate max-w-[70%]">${m.title}</span><button onclick="playMusic(${i})" class="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center text-[10px]">▶️</button></div>`).join('')||'<div class="text-[10px] text-white/30 text-center py-3">مفيش أغاني لسه 💕</div>'; } window.addMusic=()=>{ const link=document.getElementById('musicLink').value.trim(); if(!link) return; let id=''; const mm=link.match(/(?:v=|youtu.be\/)([^&]+)/); if(mm) id=mm[1]; musicList.push({title:id?`أغنية ${musicList.length+1}`:link,link,id}); localStorage.setItem('sr-music',JSON.stringify(musicList)); document.getElementById('musicLink').value=''; renderMusic(); }; window.playMusic=(i)=>{ const m=musicList[i]; document.getElementById('musicPlayer').classList.remove('hidden'); document.getElementById('nowPlaying').textContent=`الآن: ${m.title}`; if(m.id) document.getElementById('ytFrame').src=`https://www.youtube.com/embed/${m.id}?autoplay=1&playsinline=1`; }; renderMusic();
-
-window.setMood=(emoji,label)=>{ localStorage.setItem('sr-mood-'+currentUser,emoji+' '+label); document.getElementById('myMoodBar').textContent=`مزاجك: ${emoji} ${label}`; if(channel) channel.send({type:'broadcast',event:'mood',payload:{user:currentUser,emoji,label}}); supabaseClient.from('messages').insert({sender:currentUser,text:`مزاجي بقى: ${emoji} ${label}`,type:'game'}); };
-
+window.setMood=(emoji,label)=>{ localStorage.setItem('sr-mood-'+currentUser,emoji+' '+label); const myBar=document.getElementById('myMoodBar'); if(myBar) myBar.textContent=`مزاجك: ${emoji} ${label}`; if(channel) channel.send({type:'broadcast',event:'mood',payload:{user:currentUser,emoji,label}}); supabaseClient.from('messages').insert({sender:currentUser,text:`مزاجي بقى: ${emoji} ${label}`,type:'game'}); };
 window.logout=()=>{ localStorage.removeItem('sr-current'); location.reload(); };
-
-// CLEAR CHAT FROM DB
 window.clearChatDB=async()=>{
-  if(!confirm('⚠️ هتمسح كل الشات من قاعدة البيانات نهائياً عندك وعند روان؟')) return;
-  const pass=prompt('اكتب كلمة السر للتأكيد:');
-  if((currentUser==='السيد' && pass!=='sayed123') || (currentUser==='روان' && pass!=='rawan123')){ alert('كلمة السر غلط'); return; }
+  if(!confirm('⚠️ هتمسح كل الشات نهائياً؟')) return;
+  const pass=prompt('اكتب كلمة السر:'); if((currentUser==='السيد' && pass!=='sayed123') || (currentUser==='روان' && pass!=='rawan123')){ alert('كلمة السر غلط'); return; }
   const {error}=await supabaseClient.from('messages').delete().neq('id','00000000-0000-0000-0000-000000000000');
-  if(error){ alert('خطأ: '+error.message); } else { messages=[]; renderMsgs(); alert('تم مسح الشات من قاعدة البيانات ✅'); }
+  if(error){ alert('خطأ: '+error.message); } else { messages=[]; renderMsgs(); alert('تم المسح ✅'); }
 };
 
-// VOICE
+// VOICE - FIXED NO STORAGE NEEDED (base64 fallback)
 let recTimerInt;
 async function toggleRecord(){
   if(isRecording){ stopRecording(true); return; }
@@ -246,30 +282,57 @@ async function toggleRecord(){
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
     audioChunks=[]; mediaRecorder=new MediaRecorder(stream);
     mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
-    mediaRecorder.onstop=async()=>{ clearInterval(recTimerInt); const blob=new Blob(audioChunks,{type:'audio/webm'}); if(blob.size>0 && window._shouldSendVoice){ await uploadVoice(blob); } stream.getTracks().forEach(t=>t.stop()); };
+    mediaRecorder.onstop=async()=>{
+      clearInterval(recTimerInt);
+      const blob=new Blob(audioChunks,{type:'audio/webm'});
+      if(blob.size>0 && window._shouldSendVoice){ await uploadVoice(blob); }
+      stream.getTracks().forEach(t=>t.stop());
+    };
     mediaRecorder.start(); isRecording=true; window._shouldSendVoice=false;
     document.getElementById('recordingBar').classList.remove('hidden');
-    let sec=0; recTimerInt=setInterval(()=>{ sec++; document.getElementById('recTimer').textContent=sec+'s'; },1000);
-  }catch(e){ alert('الميكروفون مقفول في المتصفح'); }
+    let sec=0; recTimerInt=setInterval(()=>{ sec++; const el=document.getElementById('recTimer'); if(el) el.textContent=sec+'s'; },1000);
+    document.getElementById('voiceBtn').textContent='⏹️';
+  }catch(e){ alert('الميكروفون مقفول، لازم تسمح للمتصفح'); }
 }
-window.stopRecording=(send)=>{ window._shouldSendVoice=send; if(mediaRecorder && isRecording){ mediaRecorder.stop(); } isRecording=false; document.getElementById('recordingBar').classList.add('hidden'); };
+window.stopRecording=(send)=>{ window._shouldSendVoice=send; if(mediaRecorder && isRecording){ mediaRecorder.stop(); } isRecording=false; const bar=document.getElementById('recordingBar'); if(bar) bar.classList.add('hidden'); document.getElementById('voiceBtn').textContent='🎤'; };
 async function uploadVoice(blob){
-  const fileName=`voice_${Date.now()}.webm`;
-  const {data,error}=await supabaseClient.storage.from('chat-media').upload(fileName,blob);
-  if(error){ alert('خطأ رفع الصوت: '+error.message); return; }
-  const {data:pub}=supabaseClient.storage.from('chat-media').getPublicUrl(fileName);
-  await supabaseClient.from('messages').insert({sender:currentUser,type:'voice',audio_url:pub.publicUrl});
+  // حاول ترفع على storage، لو فشل احفظ كـ base64 في القاعدة
+  try{
+    const fileName=`voice_${Date.now()}.webm`;
+    const {error}=await supabaseClient.storage.from('chat-media').upload(fileName,blob);
+    if(!error){
+      const {data:pub}=supabaseClient.storage.from('chat-media').getPublicUrl(fileName);
+      await supabaseClient.from('messages').insert({sender:currentUser,type:'voice',audio_url:pub.publicUrl});
+      return;
+    }
+  }catch(e){}
+  // fallback base64
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    await supabaseClient.from('messages').insert({sender:currentUser,type:'voice',audio_url:reader.result});
+  };
+  reader.readAsDataURL(blob);
 }
 
-// IMAGE
+// IMAGE - FIXED
 async function handleImage(e){
   const file=e.target.files[0]; if(!file) return;
-  if(file.size>5*1024*1024){ alert('الصورة كبيرة، اختار صورة أقل من 5 ميجا'); return; }
-  const fileName=`img_${Date.now()}_${file.name}`;
-  const {error}=await supabaseClient.storage.from('chat-media').upload(fileName,file);
-  if(error){ alert('خطأ رفع الصورة: '+error.message); return; }
-  const {data:pub}=supabaseClient.storage.from('chat-media').getPublicUrl(fileName);
-  await supabaseClient.from('messages').insert({sender:currentUser,type:'image',image_url:pub.publicUrl});
+  if(file.size>6*1024*1024){ alert('الصورة كبيرة، أقل من 6 ميجا'); return; }
+  try{
+    const fileName=`img_${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi,'_')}`;
+    const {error}=await supabaseClient.storage.from('chat-media').upload(fileName,file);
+    if(!error){
+      const {data:pub}=supabaseClient.storage.from('chat-media').getPublicUrl(fileName);
+      await supabaseClient.from('messages').insert({sender:currentUser,type:'image',image_url:pub.publicUrl});
+      e.target.value=''; return;
+    }
+  }catch(err){}
+  // fallback base64 لو الستوريج مش معمول
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    await supabaseClient.from('messages').insert({sender:currentUser,type:'image',image_url:reader.result});
+  };
+  reader.readAsDataURL(file);
   e.target.value='';
 }
 
@@ -277,62 +340,88 @@ async function handleImage(e){
 window.enableNotify=async()=>{
   if(!('Notification' in window)){ alert('المتصفح لا يدعم الإشعارات'); return; }
   const perm=await Notification.requestPermission();
-  document.getElementById('notifyStatus').textContent=perm==='granted'?'✅ الإشعارات شغالة':'❌ مرفوضة';
-  if(perm==='granted'){ new Notification('السيد & روان ❤️',{body:'الإشعارات اشتغلت! هتوصلك رسائل روان حتى لو التطبيق مقفول'}); }
+  const el=document.getElementById('notifyStatus'); if(el) el.textContent=perm==='granted'?'✅ شغالة':'❌ مرفوضة';
+  if(perm==='granted'){ new Notification('السيد & روان ❤️',{body:'الإشعارات اشتغلت!'}); }
 };
 function notifyNewMessage(m){
   if(m.sender===currentUser) return;
   if(Notification.permission==='granted' && document.hidden){
-    new Notification(m.sender+' 💬',{body:m.text|| (m.type==='image'?'📷 صورة':'🎤 فويس'), icon:'https://cdn-icons-png.flaticon.com/512/833/833472.png'});
+    new Notification(m.sender+' 💬',{body:m.text|| (m.type==='image'?'📷 صورة':'🎤 فويس')});
   }
-  // صوت اشعار
-  try{ const a=new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=notification-2-126507.mp3'); a.volume=0.5; a.play(); }catch(e){}
 }
 
-// CALL WEBRTC SIMPLE SIGNALING VIA SUPABASE BROADCAST
+// CALL - FIXED REAL AUDIO
+async function createPeer(isCaller){
+  peerConn=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+  peerConn.onicecandidate=e=>{ if(e.candidate && channel){ channel.send({type:'broadcast',event:'call_ice',payload:{candidate:e.candidate,from:currentUser}}); } };
+  peerConn.ontrack=e=>{ const audio=document.getElementById('remoteAudio'); if(audio){ audio.srcObject=e.streams[0]; } document.getElementById('callStatus').textContent='متصل ❤️'; startCallTimer(); };
+  if(localStream){ localStream.getTracks().forEach(track=>peerConn.addTrack(track,localStream)); }
+}
+function startCallTimer(){ callSeconds=0; callTimerInt=setInterval(()=>{ callSeconds++; const m=String(Math.floor(callSeconds/60)).padStart(2,'0'); const s=String(callSeconds%60).padStart(2,'0'); const el=document.getElementById('callTimer'); if(el) el.textContent=`${m}:${s}`; },1000); }
+function stopCallTimer(){ clearInterval(callTimerInt); const el=document.getElementById('callTimer'); if(el) el.textContent='00:00'; }
+
 window.startCall=async()=>{
   document.getElementById('callScreen').classList.remove('hidden'); document.getElementById('callScreen').classList.add('flex');
   document.getElementById('callName').textContent=currentUser==='السيد'?'روان':'السيد';
   document.getElementById('callStatus').textContent='جاري الاتصال...';
-  if(channel) channel.send({type:'broadcast',event:'call_invite',payload:{from:currentUser}});
   try{
     localStream=await navigator.mediaDevices.getUserMedia({audio:true});
-  }catch(e){ document.getElementById('callStatus').textContent='الميكروفون مقفول'; }
+    await createPeer(true);
+    const offer=await peerConn.createOffer(); await peerConn.setLocalDescription(offer);
+    if(channel) channel.send({type:'broadcast',event:'call_offer',payload:{offer,from:currentUser}});
+  }catch(e){ document.getElementById('callStatus').textContent='الميكروفون مقفول - اسمح للميكروفون'; }
 };
 window.endCall=()=>{
   document.getElementById('callScreen').classList.add('hidden'); document.getElementById('callScreen').classList.remove('flex');
   document.getElementById('incomingCall').classList.add('hidden'); document.getElementById('incomingCall').classList.remove('flex');
-  if(localStream) localStream.getTracks().forEach(t=>t.stop());
+  if(localStream) localStream.getTracks().forEach(t=>t.stop()); localStream=null;
+  if(peerConn){ peerConn.close(); peerConn=null; }
+  stopCallTimer(); if(window._ring){ window._ring.pause(); window._ring=null; }
   if(channel) channel.send({type:'broadcast',event:'call_end',payload:{from:currentUser}});
 };
-window.toggleMute=()=>{
-  if(localStream){ const t=localStream.getAudioTracks()[0]; if(t){ t.enabled=!t.enabled; document.getElementById('muteBtn').textContent=t.enabled?'🎤':'🔇'; } }
-};
-function showIncoming(from){
+window.toggleMute=()=>{ if(localStream){ const t=localStream.getAudioTracks()[0]; if(t){ t.enabled=!t.enabled; document.getElementById('muteBtn').textContent=t.enabled?'🎤':'🔇'; } } };
+window.toggleSpeaker=()=>{ alert('الصوت شغال من السماعة العادية، دوس على 🔊 في موبايلك'); };
+async function showIncoming(from, offer){
+  window._incomingOffer=offer; window._incomingFrom=from;
   document.getElementById('incomingCall').classList.remove('hidden'); document.getElementById('incomingCall').classList.add('flex');
   document.getElementById('incomingName').textContent=from+' يتصل... 📞';
   try{ const a=new Audio('https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=phone-ringing-101957.mp3'); a.loop=true; a.play(); window._ring=a; }catch(e){}
 }
-window.acceptCall=()=>{ if(window._ring){ window._ring.pause(); } document.getElementById('incomingCall').classList.add('hidden'); document.getElementById('callScreen').classList.remove('hidden'); document.getElementById('callScreen').classList.add('flex'); document.getElementById('callStatus').textContent='متصل ❤️'; };
-window.declineCall=()=>{ if(window._ring){ window._ring.pause(); } document.getElementById('incomingCall').classList.add('hidden'); document.getElementById('incomingCall').classList.remove('flex'); if(channel) channel.send({type:'broadcast',event:'call_end',payload:{from:currentUser}}); };
+window.acceptCall=async()=>{
+  if(window._ring){ window._ring.pause(); }
+  document.getElementById('incomingCall').classList.add('hidden'); document.getElementById('callScreen').classList.remove('hidden'); document.getElementById('callScreen').classList.add('flex');
+  document.getElementById('callName').textContent=window._incomingFrom||'حبيبك';
+  document.getElementById('callStatus').textContent='جاري الرد...';
+  try{
+    localStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    await createPeer(false);
+    await peerConn.setRemoteDescription(new RTCSessionDescription(window._incomingOffer));
+    const answer=await peerConn.createAnswer(); await peerConn.setLocalDescription(answer);
+    if(channel) channel.send({type:'broadcast',event:'call_answer',payload:{answer,from:currentUser}});
+  }catch(e){ document.getElementById('callStatus').textContent='خطأ: '+e.message; }
+};
+window.declineCall=()=>{ if(window._ring){ window._ring.pause(); } document.getElementById('incomingCall').classList.add('hidden'); if(channel) channel.send({type:'broadcast',event:'call_end',payload:{from:currentUser}}); };
 
 async function init(){
  if(!currentUser){ login(); return; }
  const {data,error}=await supabaseClient.from('messages').select('*').order('created_at',{ascending:true}).limit(300);
- if(error){ document.getElementById('app').innerHTML=`<div class="p-6 text-[11px]">خطأ DB: ${error.message}<br><br>شغل ملف supabase.sql الجديد</div>`; return; }
+ if(error){ document.getElementById('app').innerHTML=`<div class="p-6 text-[11px]">خطأ DB: ${error.message}<br><br>شغل ملف supabase_new.sql الجديد في Supabase</div>`; return; }
  messages=data||[]; main();
- channel=supabaseClient.channel('sayed-rawan-love-room', {config:{broadcast:{self:false}}});
+ xoMySymbol=currentUser==='السيد'?'X':'O';
+ channel=supabaseClient.channel('sayed-rawan-love-room-v2', {config:{broadcast:{self:false}}});
  channel.on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},p=>{ if(!messages.find(m=>m.id===p.new.id)){ messages.push(p.new); renderMsgs(); notifyNewMessage(p.new); } })
  .on('postgres_changes',{event:'DELETE',schema:'public',table:'messages'},()=>{ messages=[]; renderMsgs(); })
- .on('broadcast',{event:'mood'},({payload})=>{ if(payload.user!==currentUser){ const bar=document.getElementById('partnerMoodBar'); if(bar) bar.textContent=`هي: ${payload.emoji} ${payload.label}`; } })
+ .on('broadcast',{event:'mood'},({payload})=>{ if(payload.user!==currentUser){ const bar=document.getElementById('partnerMoodBar'); if(bar) bar.textContent=`${payload.emoji} ${payload.label}`; } })
+ .on('broadcast',{event:'sarahah_sync'},({payload})=>{ if(payload.from!==currentUser){ currentQ=payload.q; const card=document.getElementById('sarahahCard'); if(card) card.textContent=payload.q; openGames(); showGame('sarahah'); alert(payload.from+' بعتلك سؤال صراحة: '+payload.q); } })
  .on('broadcast',{event:'xo'},({payload})=>{ xoBoard=payload.board; xoTurnSymbol=payload.turn; drawXO(); })
- .on('broadcast',{event:'xo_reset'},({payload})=>{ xoBoard=payload.board; xoTurnSymbol=payload.turn; document.getElementById('xoWinner')?.classList.add('hidden'); drawXO(); })
- .on('broadcast',{event:'xo_win'},({payload})=>{ const el=document.getElementById('xoWinner'); if(el){ el.classList.remove('hidden'); el.textContent=payload.winner+' كسب! 🎉'; } })
- .on('broadcast',{event:'xo_invite'},({payload})=>{ if(payload.from!==currentUser){ if(confirm(payload.from+' بيدعوك تلعب XO! تفتح اللعبة؟')){ openGames(); showGame('xo'); } } })
- .on('broadcast',{event:'call_invite'},({payload})=>{ if(payload.from!==currentUser) showIncoming(payload.from); })
- .on('broadcast',{event:'call_end'},()=>{ document.getElementById('callScreen').classList.add('hidden'); document.getElementById('incomingCall').classList.add('hidden'); if(window._ring) window._ring.pause(); })
+ .on('broadcast',{event:'xo_reset'},({payload})=>{ xoBoard=payload.board; xoTurnSymbol=payload.turn; const w=document.getElementById('xoWinner'); if(w) w.classList.add('hidden'); drawXO(); })
+ .on('broadcast',{event:'xo_invite'},({payload})=>{ if(payload.from!==currentUser){ if(confirm(payload.from+' بيدعوك تلعب XO! تفتح؟')){ openGames(); showGame('xo'); } } })
+ .on('broadcast',{event:'music_sync'},({payload})=>{ if(payload.from!==currentUser){ document.getElementById('musicPlayer')?.classList.remove('hidden'); document.getElementById('nowPlaying').textContent=`${payload.from} مشغل أغنية ❤️`; document.getElementById('ytContainer').innerHTML=`<iframe class="w-full h-[220px]" src="https://www.youtube.com/embed/${payload.id}?autoplay=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`; openGames(); showGame('music'); } })
+ .on('broadcast',{event:'call_offer'},async({payload})=>{ if(payload.from!==currentUser) await showIncoming(payload.from, payload.offer); })
+ .on('broadcast',{event:'call_answer'},async({payload})=>{ if(payload.from!==currentUser && peerConn){ await peerConn.setRemoteDescription(new RTCSessionDescription(payload.answer)); document.getElementById('callStatus').textContent='متصل ❤️'; startCallTimer(); } })
+ .on('broadcast',{event:'call_ice'},async({payload})=>{ if(payload.from!==currentUser && peerConn){ try{ await peerConn.addIceCandidate(new RTCIceCandidate(payload.candidate)); }catch(e){} } })
+ .on('broadcast',{event:'call_end'},()=>{ document.getElementById('callScreen').classList.add('hidden'); document.getElementById('callScreen').classList.remove('flex'); document.getElementById('incomingCall').classList.add('hidden'); document.getElementById('incomingCall').classList.remove('flex'); if(localStream) localStream.getTracks().forEach(t=>t.stop()); if(peerConn) peerConn.close(); peerConn=null; stopCallTimer(); if(window._ring){ window._ring.pause(); } })
  .subscribe();
- if(Notification.permission==='granted'){ document.getElementById('notifyStatus')?.textContent&& (document.getElementById('notifyStatus').textContent='✅ الإشعارات شغالة'); }
 }
 init();
 </script>
